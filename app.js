@@ -2,7 +2,9 @@ var express = require('express');
 var app = express();
 var serveStatic = require('serve-static');
 var Spreadsheet = require('edit-google-spreadsheet');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var Firebase = require("firebase");
+var myFirebaseRef = new Firebase("https://scorching-torch-4370.firebaseio.com");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -17,7 +19,16 @@ var credentials ={
   spreadsheetId: '1QUq8v7RTUns3TTZgJdCS6V87lRvPN7rC23YIzWueBVA',
   worksheetId: "od6"
 };
+
+// 
+myFirebaseRef.set({test: "It works!"});
+
 // ---------------------------------
+app.get("/meta", function (req, res) {
+    Spreadsheet.load(credentials, function(err, spreadsheet) {
+        getMeta(err, spreadsheet, res);
+    });
+});
 app.get("/load", function (req, res) {
     Spreadsheet.load(credentials, function(err, spreadsheet) {
         getData(err, spreadsheet, res);
@@ -30,6 +41,13 @@ app.post("/add", function (req, res) {
         writeData(err, spreadsheet, arr, res);
     });
 });
+function getMeta(err, spreadsheet, res) {
+    if(err) throw err;
+    spreadsheet.metadata(function(err, metadata){
+      if(err) throw err;
+      res.json(metadata);
+    });
+  }
 function getData(err, spreadsheet, res){
     if(err) throw err;
     spreadsheet.receive({},function(err, rows, info) {
