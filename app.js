@@ -29,7 +29,6 @@ app.get("/load", function (req, res) {
     });
 });
 app.post("/add", function (req, res) {
-    console.log(req.body);
     var arr = [[req.body.venue, req.body.data, req.body.cachet, req.body.spese, req.body.diff]];
 	Spreadsheet.load(credentials, function(err, spreadsheet) {
         gdrive.writeData(err, spreadsheet, arr, res);
@@ -39,6 +38,11 @@ app.get("/graph", function (req, res) {
     res.json(appData);
 });
 
+var convert = function(input){
+  // change dots in commas
+  var out = parseInt(input.toString().replace('.', ''), 10);
+  return out;
+};
 // ---------------------------------------------------
 var init = function(){
     var lastModified;
@@ -61,14 +65,14 @@ var init = function(){
                 if(err) throw err;
                 spreadsheet.receive({getValues: true}, function(err, obj, info) {
                     if(err) throw err;
-                    //console.log(obj);
                     // PROCESS DATA from SPREADSHEET to get some usable figures
                     // **********************************************************
                         //appData.now = new Date();
                         // 1. store total values in graph obj
-                        var total_IN = Math.round(parseFloat(obj[2]['5']));
-                        var total_OUT= Math.round(parseFloat(obj[2]['6']));
-                        var total_NET = Math.round(parseFloat(obj[2]['7']));
+
+                        var total_IN = convert(obj[2]['5']);
+                        var total_OUT= convert(obj[2]['6']);
+                        var total_NET = convert(obj[2]['7']);
                         appData.pieData.push({name: 'IN', y: total_IN});
                         appData.pieData.push({name: 'OUT', y: total_OUT});
 
@@ -94,11 +98,11 @@ var init = function(){
                            // if there's a venue ok, otherwise use notes field
                            var venue = (innerObj['3'] != '-' && innerObj['3'] !='') ? innerObj['3'] : innerObj['9'];
                            var location = innerObj['4'];
-                           var cachet = innerObj['5'] || 0;
-                           var expenses = innerObj['6'] || 0;
-                           var net = innerObj['7'];
-                           var color = (net < 0) ? 'red' : ((net > 0) ? 'green' : '');
-
+                           var cachet = (innerObj['5']) || 0;
+                           var expenses = (innerObj['6']) || 0;
+                           var net = convert(innerObj['7']);
+                           var color = (net < 0) ? 'green' : ((net > 0) ? 'red' : '');
+                           console.log(net);
                            tmpTotal += net;
                            tmpObjSpline.name = date+'<br><strong>'+venue+'</strong><br>'+location+'<br>Cachet:'+cachet+'€ Expenses:'+expenses+'€';
                            tmpObjSpline.y =tmpTotal;
