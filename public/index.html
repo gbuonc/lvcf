@@ -1,9 +1,238 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Express Letlo Vin TEst</title>
+        <title>Express Letlo Vin Test</title>
+        <link rel="stylesheet" href="semantic/dist/semantic.min.css" type="text/css" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width">
     </head>
     <body>
-        <h1>Here we go!</h1>
+        <div class="ui fixed inverted main menu">
+            <div class="container">
+              <div class="title item">
+                <b>LETLO VIN </b>Cash Flow
+              </div>
+            </div>
+            </div>
+        </div>
+        <div class="ui vertically padded page stackable responsive grid">
+            <div class="seven wide column">
+                <h2 class="ui header">
+                  <div class="content">Letlo Vin
+                    <div class="sub header">Cash Flow</div>
+                  </div>
+                </h2>
+            </div>
+            <div class="nine wide column">
+                <div id='stats-container' class="ui tiny statistics">
+                    <div class="ui column centered grid">
+                        <script id='stats-template' type='text/ractive'>
+                          <div class="small green statistic">
+                                <div class="value">{{mnin}}€</div><div class="label">In</div>
+                          </div>
+                          <div class="small red statistic">
+                            <div class="value">{{mnout}}€</div><div class="label">Out</div>
+                          </div>
+                          <div class="statistic">
+                                <div class="value">{{total}}€</div><div class="label">Total</div>
+                          </div>
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve wide column">
+                <div class="container-wrapper" style="width:100%; height:0; padding-top:40%; position:relative;">
+                    <div id="container" style="position:absolute; top:0; left:0; right:0; bottom:0;"></div>
+                </div>
+            </div>
+            <div class="four wide column right aligned">
+                <div class="container-wrapper" style="width:100%; height:0; padding-top:80%; position:relative;">
+                    <div id="containerPie" style="position:absolute; top:0; left:0; right:0; bottom:0;"></div>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+                <script id='template2' type='text/ractive'>
+                </script>
+                <div class="eight wide column">
+                <!-- submit form .................. -->
+                <div class="ui fluid form">
+                    <form action="/add" method="post" id="update-form">
+                        <div class="six wide field">
+                            <label>Date</label>
+                            <input placeholder="Event date" type="date">
+                        </div>
+                        <div class="two fields">
+                            <div class="six wide field">
+                                <label>Venue</label>
+                                <input placeholder="Concert location" type="text">
+                            </div>
+                            <div class="ten wide field">
+                                <label>Address</label>
+                                <input placeholder="City and province" type="text">
+                            </div>
+                        </div>
+                         <div class="two fields">
+                            <div class="five wide field">
+                                <label>Cachet</label>
+                                <div class="ui labeled input">
+                                    <div class="ui label">€</div><input placeholder="Money In" type="number">
+                                </div>
+                            </div>
+                            <div class="five wide field">
+                                <label>Expenses</label>
+                                <div class="ui labeled input">
+                                    <div class="ui label">€</div><input placeholder="Money Out" type="number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Notes</label>
+                            <textarea></textarea>
+                        </div>
+                       <div class="ui labeled icon button">
+                        Create New Order
+                        <i class="add icon"></i>
+                      </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="eight wide column">
+                <div id='containerz2'></div>
+                <script id='templ' type='text/ractive'>
+                    <div class="ui divided relaxed selection list">
+                        {{#each gigs:num}}
+                        <div class="item">
+                            <div class="ui right floated">
+                                 <div class="ui horizontal {{color}} label">{{net}}€</div>
+                                 <!-- <div class="compact ui button">Edit</div> -->
+                            </div>
+                            <div class="content">
+                              <div class="header">{{date}}</div>
+                              <div class="description"><strong>{{venue}}</strong> - {{location}}<br><span class="notes">{{notes}}</span></div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </script>
+            </div>
+
+
+            <div class="three column row">
+                <div class="column">
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
+                quis nostrud exerci.
+                </div>
+                <div class="column">
+                <img>
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
+                quis nostrud exerci.
+                </div>
+                <div class="column">
+                <img>
+                Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
+                quis nostrud exerci tation ullamcorper suscipit lobortis nisl
+                ut aliquip ex ea commodo consequat.
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src='//cdn.ractivejs.org/latest/ractive.min.js'></script>
+        <script src="//code.highcharts.com/stock/highstock.js"></script>
+        <script>
+            // CHARTS -----------------------------------------------------
+            var goMakeChart = function(appData){
+                $('#container').highcharts({
+                    colors: ['#e4d354', '#2b908f', '#f45b5b', '#91e8e1'],
+                    chart:{backgroundColor: 'none'},
+                    credits:{enabled:false},
+                    title:'',
+                    legend:{enabled: false},
+                    plotOptions: {
+                        spline: {
+                            lineWidth: 1,
+                            marker: {enabled: false}
+                        },
+                        series: {
+                            // dataLabels: {enabled: true},
+                            tooltip: {valueSuffix: ' €'}
+                        }
+                    },
+                    yAxis: {
+                        title: {enabled: false},
+                        alternateGridColor: '#f2f2f2',
+                        labels: {format: '{value}€'}
+                    },
+                    xAxis: {
+                        labels: {enabled: false}
+                    },
+                    series: [
+                       {type: 'column', name: 'Net Value', data: appData.columnData},
+                       {type: 'spline', name: 'Net Value', data: appData.splineData}
+                    ]
+                });
+                $('#containerPie').highcharts({
+                    colors: ['#f45b5b', '#91e8e1'],
+                    credits:{enabled:false},
+                    chart:{backgroundColor: 'none'},
+                    plotOptions: {
+                        pie: {
+                            dataLabels: {distance: -50},
+                            size: '100%',
+                            startAngle: 220
+                        }
+                    },
+                    title:'',
+                    series: [{type: 'pie', name: 'Cash Flow', data: appData.pieData}]
+                });
+            }
+
+            // INIT ON LOAD -----------------------------------------------
+            $(function () {
+                $.ajax({
+                    dataType: "json",
+                    url: './graph',
+                    success: function(data){
+                        // populate stats
+                        var ractive = new Ractive({
+                            el: 'stats-container',
+                            template: '#stats-template',
+                            data: data.ractive
+                        });
+                        // populate gig list
+                        var ractive2 = new Ractive({
+                            el: 'containerz2',
+                            template: '#templ',
+                            data: data.ractive
+                        });
+                        // draw charts...
+                        console.log(data);
+                        goMakeChart(data);
+                    }
+                });
+            });
+
+            // FORM UPLOAD ****************************** */
+           /* $('#update-form').on('submit', function(e){
+                var $form = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: './add/',
+                    data: $form,
+                    dataType: 'json',
+                    success: function(data){
+                       console.log(data);
+                    }
+                });
+                e.preventDefault();
+            });*/
+        </script>
     </body>
 </html>
