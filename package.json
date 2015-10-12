@@ -1,0 +1,26 @@
+{
+  "name": "lvcf",
+  "version": "1.0.0",
+  "description": "letlo vin cash flow",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gbuonc/lvcf.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gbuonc/lvcf/issues"
+  },
+  "homepage": "https://github.com/gbuonc/lvcf#readme",
+  "devDependencies": {
+    "body-parser": "^1.14.1",
+    "edit-google-spreadsheet": "^0.2.19",
+    "express": "^4.13.3",
+    "firebase": "^2.3.1",
+    "serve-static": "^1.10.0"
+  }
+}
