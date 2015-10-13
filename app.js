@@ -101,7 +101,7 @@ var init = function(){
                            var cachet = (innerObj['5']) || 0;
                            var expenses = (innerObj['6']) || 0;
                            var net = convert(innerObj['7']);
-                           var color = (net < 0) ? 'green' : ((net > 0) ? 'red' : '');
+                           var color = (net < 0) ? 'red' : ((net > 0) ? 'green' : '');
                            console.log(net);
                            tmpTotal += net;
                            tmpObjSpline.name = date+'<br><strong>'+venue+'</strong><br>'+location+'<br>Cachet:'+cachet+'€ Expenses:'+expenses+'€';
